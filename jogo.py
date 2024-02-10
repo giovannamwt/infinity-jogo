@@ -28,21 +28,22 @@ class Heroi1():
         self.dano = [5,6,7]
 
      def atacar(self):
-        pass
-         
+        pass         
          
 class Heroi2():
      def __init__(self):        
          self.nome = 'Arqueiro'
          self.foto = pygame.image.load('images/heroi2.png')
-         self.hp_inicial = 130
+         self.hp_atual = 110
+         self.hp_maximo = 110
          self.dano = [7,8,9]
 
 class Heroi3():
      def __init__(self):        
          self.nome = 'Mago'
          self.foto = pygame.image.load('images/heroi3.png')
-         self.hp_inicial = 120
+         self.hp_atual = 120
+         self.hp_maximo = 120
          self.dano = [9,10,11]
 
 class Vilao1():
@@ -59,14 +60,16 @@ class Vilao2():
      def __init__(self):        
          self.nome = 'Arqueiro'
          self.foto = pygame.image.load('images/vilao2.png')
-         self.hp_inicial = 130
+         self.hp_atual = 110
+         self.hp_maximo = 110
          self.dano = [7,8,9]
 
 class Vilao3():
      def __init__(self):        
          self.nome = 'Mago'
          self.foto = pygame.image.load('images/vilao3.png')
-         self.hp_inicial = 120
+         self.hp_atual = 120
+         self.hp_maximo = 120
          self.dano = [9,10,11]
 
 class Jogo():
@@ -77,12 +80,11 @@ class Jogo():
          self.bg3 = pygame.image.load('images/fundo3.png')
          self.bg4 = pygame.image.load('images/fundo4.png')
          self.bg5 = pygame.image.load('images/fundo5.png')
-         self.hp_inicial = 120
-         self.dano = [9,10,11]
+         self.bg6 = pygame.image.load('images/fundo6.png')
+         self.bg7 = pygame.image.load('images/fundo7.png')
+         self.bg8 = pygame.image.load('images/fundo8.png')
 
-
-         
-
+  
 #Minhas variáveis
 dimensoes = (800,600)
 cor_da_tela = (230, 230, 230) 
@@ -99,14 +101,14 @@ titulo3='Você Venceu!'
 titulo4='Você Perdeu!'
 txt_botao1 = fonte_texto_pequeno.render('escolhe' , True , 1) 
 txt_botao2 = fonte_texto_pequeno.render('atacar' , True , 1) 
+txt_botao3 = fonte_texto_pequeno.render('continuar' , True , 1) 
 heroi_escolhido = False
 fase_escolhida = False
+ganhador = 0
 
 
 jogo = Jogo()
 guerreiro = Heroi1()
-
-
 vilao1 = Vilao1()
 
 pygame.display.set_caption('JOGO DA GIOVANNA') #mensagem janela
@@ -145,6 +147,41 @@ def escolher_heroi1():
 
     pygame.display.update()  
 
+
+def escolher_heroi2():
+
+    global heroi_escolhido
+
+    tela.blit(jogo.bg6, (0, 0))
+    mouse = pygame.mouse.get_pos() 
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: 
+            pygame.quit() 
+
+#coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                heroi_escolhido = True
+
+                   
+#define a cor do botão ao interagir    
+    if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/8+10, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/8+10,altura/2+200,140,40]) #desenho do botão
+      
+#posição do texto do texto
+    tela.blit(txt_botao1 , (largura/8+30, altura/2+207)) 
+    
+    fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
+    txttela = fontesys.render(titulo1, 1, (0,0,0))  ##### renderiza o texto na cor desejada
+    tela.blit(txttela,(230,30)) #coordenadas do titulo
+    
+
+    pygame.display.update()  
+
              
 def escolher_fase1():
 
@@ -171,8 +208,12 @@ def escolher_fase1():
     
 
 def batalha_fase1():
+
+    global ganhador
+
     tela.blit(jogo.bg3, (0, 0))
     mouse = pygame.mouse.get_pos() 
+   
 
     barra_saude_vilao = BarraSaude(largura/2+120, altura/5, 10, guerreiro.hp_maximo, guerreiro.hp_atual)
     barra_saude_vilao.draw(tela)
@@ -185,11 +226,22 @@ def batalha_fase1():
 #coordenadas do botão    
         if evento.type == pygame.MOUSEBUTTONDOWN: 
             if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
-                dano = random.choice(guerreiro.dano)
-                guerreiro.hp_atual = guerreiro.hp_atual - dano
+                if guerreiro.hp_atual > 0 and vilao1.hp_atual > 0:
+                    dano = random.choice(guerreiro.dano)
+                    guerreiro.hp_atual = guerreiro.hp_atual - dano
 
-                danoH = random.choice(vilao1.dano)
-                vilao1.hp_atual = vilao1.hp_atual - danoH
+                    danoH = random.choice(vilao1.dano)
+                    vilao1.hp_atual = vilao1.hp_atual - danoH
+
+                    print(ganhador)
+                else:
+                    if guerreiro.hp_atual <= 0:
+                        ganhador = 2
+                        print(ganhador)
+                    else:
+                        ganhador = 1
+                        print(ganhador)
+
                 #print(f"Tomou {dano} de dano")
 
 #define a cor do botão ao interagir    
@@ -205,26 +257,67 @@ def batalha_fase1():
     pygame.display.update()  
 
 def vitoria():
+
+    global continuar
+
+    mouse = pygame.mouse.get_pos() 
     tela.blit(jogo.bg4, (0, 0))
     fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
     txttela = fontesys.render(titulo3, 1, (0,0,0))  ##### renderiza o texto na cor desejada
-    tela.blit(txttela,(230,30)) #coordenadas do titulo
+    tela.blit(txttela,(250,280)) #coordenadas do titulo
 
     for evento in pygame.event.get(): #apertar no x
         if evento.type == pygame.QUIT: pygame.quit()
+
+        #coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/3+40 <= mouse[0] <= largura/3+180 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                continuar = True
+
+                   
+#define a cor do botão ao interagir    
+    if largura/3+40 <= mouse[0] <= largura/3+180 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/3+40, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/3+40,altura/2+200,140,40]) #desenho do botão
+      
+#posição do texto do texto
+    tela.blit(txt_botao3 , (largura/3+50, altura/2+207)) 
+
+    pygame.display.update()  
 
 def derrota():
-    tela.blit(jogo.bg4, (0, 0))
+    global continuar
+    mouse = pygame.mouse.get_pos() 
+    tela.blit(jogo.bg5, (0, 0))
     fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
-    txttela = fontesys.render(titulo4, 1, (0,0,0))  ##### renderiza o texto na cor desejada
-    tela.blit(txttela,(230,30)) #coordenadas do titulo
+    txttela = fontesys.render(titulo4, 1, ('white'))  ##### renderiza o texto na cor desejada
+    tela.blit(txttela,(250,280)) #coordenadas do titulo
 
     for evento in pygame.event.get(): #apertar no x
         if evento.type == pygame.QUIT: pygame.quit()
+
+        #coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/3+40 <= mouse[0] <= largura/3+180 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                continuar = True
+
+                   
+#define a cor do botão ao interagir    
+    if largura/3+40 <= mouse[0] <= largura/3+180 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/3+40, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/3+40,altura/2+200,140,40]) #desenho do botão
+      
+#posição do texto do texto
+    tela.blit(txt_botao3 , (largura/3+50, altura/2+207)) 
+
+    pygame.display.update()  
 
 
 while True :
-    # print(heroi_escolhido)
     
     if heroi_escolhido == False: 
         escolher_heroi1()
@@ -234,7 +327,18 @@ while True :
         if fase_escolhida == False:
             escolher_fase1()
         else:
-            batalha_fase1()
+            if ganhador == 0:
+                batalha_fase1()
+            else:
+                if ganhador == 1:
+                    if continuar == False:
+                        derrota()
+                    else:
+                        escolher_heroi1()
+                    
+                else:
+                    if continuar == False:
+                        vitoria()
 
      
 
