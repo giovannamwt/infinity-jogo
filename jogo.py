@@ -75,6 +75,8 @@ class Jogo():
          self.bg2 = pygame.image.load('images/fundo2.png')
          self.bg1 = pygame.image.load('images/fundo1.png')
          self.bg3 = pygame.image.load('images/fundo3.png')
+         self.bg4 = pygame.image.load('images/fundo4.png')
+         self.bg5 = pygame.image.load('images/fundo5.png')
          self.hp_inicial = 120
          self.dano = [9,10,11]
 
@@ -93,6 +95,8 @@ fonte=pygame.font.get_default_font()
 fonte_texto_pequeno= pygame.font.SysFont(fonte,35) 
 titulo1='Escolha seu herói:' 
 titulo2='Escolha a fase:'
+titulo3='Você Venceu!'
+titulo4='Você Perdeu!'
 txt_botao1 = fonte_texto_pequeno.render('escolhe' , True , 1) 
 txt_botao2 = fonte_texto_pequeno.render('atacar' , True , 1) 
 heroi_escolhido = False
@@ -199,6 +203,24 @@ def batalha_fase1():
 
 
     pygame.display.update()  
+
+def vitoria():
+    tela.blit(jogo.bg4, (0, 0))
+    fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
+    txttela = fontesys.render(titulo3, 1, (0,0,0))  ##### renderiza o texto na cor desejada
+    tela.blit(txttela,(230,30)) #coordenadas do titulo
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit()
+
+def derrota():
+    tela.blit(jogo.bg4, (0, 0))
+    fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
+    txttela = fontesys.render(titulo4, 1, (0,0,0))  ##### renderiza o texto na cor desejada
+    tela.blit(txttela,(230,30)) #coordenadas do titulo
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit()
 
 
 while True :
