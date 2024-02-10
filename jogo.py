@@ -312,17 +312,12 @@ def batalha_fase1():
                     ataque_jogador.draw(tela)
                     ataque_inimigo.draw(tela)
 
-                    print(ganhador)
                 else:
                     if guerreiro.hp_atual <= 0:
                         ganhador = 2
-                        print(ganhador)
                     else:
                         ganhador = 1
-                        print(ganhador)
-
-                #print(f"Tomou {dano} de dano")
-
+                       
 #define a cor do botão ao interagir    
     if largura/8+70 <= mouse[0] <= largura/8+210 and altura/2+200 <= mouse[1] <= altura/2+240: 
         pygame.draw.rect(tela,cor_clara,[largura/8+70, altura/2+200,140,40]) #desenho do botão
@@ -604,89 +599,89 @@ def fim():
 
 
 while True :
-    
-    if heroi_escolhido == False: 
-        escolher_heroi1() #heroi 1
-        
-    else:
-        if fase_escolhida == False:
-                escolher_fase1() #heroi 1 + fase 1
+    while ganhador != 1:
+        if heroi_escolhido == False: 
+            escolher_heroi1() #heroi 1
         
         else:
-            if ganhador == 0:
-                batalha_fase1() #heroi 1 + fase 1 + vilao1
-                
+            if fase_escolhida == False:
+                escolher_fase1() #heroi 1 + fase 1
+        
             else:
-                if ganhador == 2:
-                    if continuar == False:
-                        derrota()
-                    else:
-                        escolher_heroi1() #fim do loop
-                    
+                if ganhador == 0:
+                    batalha_fase1() #heroi 1 + fase 1 + vilao1
+                
                 else:
-                    if continuar == False:
-                        vitoria()
-                    else:
-                        if num_heroi == 0:
-                            escolher_heroi2()
+                    if ganhador == 2:
+                        if continuar == False:
+                            derrota()
                         else:
-                            if num_heroi == 1: #heroi 1
-                                if num_fase == 0:
-                                    escolher_fase2() 
-                                else:
-                                    if num_fase == 1:
-                                        batalha_fase1() #fim do loop
-                                    else:
-                                        if ganhador == 0:
-                                            batalha_fase2_h1() #heroi 1 + fase 2 + vilao 2
-                                        else:
-                                            if ganhador == 2:
-                                                if continuar == False:
-                                                    derrota()
-                                                else:
-                                                    escolher_heroi2()
-                                            else:
-                                                if continuar == False:
-                                                    fim()
-                                                else:
-                                                    escolher_heroi2() #fim do loop
+                            pass
+                            #escolher_heroi1() #fim do loop
+                    
 
+    if continuar == False:
+        vitoria()
+    else:
+        if num_heroi == 0:
+            escolher_heroi2()
+        else:
+            if num_heroi == 1: #heroi 1
+                if num_fase == 0:
+                    escolher_fase2() 
+                else:
+                    if num_fase == 1:
+                        batalha_fase1() #fim do loop
+                    else:
+                        if ganhador == 0:
+                            batalha_fase2_h1() #heroi 1 + fase 2 + vilao 2
+                        else:
+                            if ganhador == 2:
+                                if continuar == False:
+                                    derrota()
+                                else:
+                                    escolher_heroi2()
                             else:
-                                if num_fase == 0:
-                                    escolher_fase2()
-                                elif num_fase == 1:
-                                    if ganhador == 0:
-                                        batalha_fase1_h2() #heroi 2 + fase 1 + vilao 1
-                                    elif ganhador == 2:
-                                        if continuar == False:
-                                            derrota()
-                                        else:
-                                            escolher_heroi2() #fim do loop
-                                    else:
-                                        if continuar == False:
-                                            vitoria()
-                                        else:
-                                            escolher_heroi2 #fim do loop
-
-
+                                if continuar == False:
+                                    fim()
                                 else:
-                                    if ganhador == 0:
-                                        batalha_fase2_h2() #heroi 2 + fase 2 + vilao 2
-                                    else:
-                                        if ganhador == 2:
-                                            if continuar == False:
-                                             derrota()
-                                            else:
-                                             escolher_heroi2() #fim do loop
-                                        else:
-                                            if continuar == False:
-                                               fim()
-                                            else:
-                                             escolher_heroi2 #fim do loop
+                                    escolher_heroi2() #fim do loop
+
+            else:
+                if num_fase == 0:
+                    escolher_fase2()
+                elif num_fase == 1:
+                    if ganhador == 0:
+                        batalha_fase1_h2() #heroi 2 + fase 1 + vilao 1
+                    elif ganhador == 2:
+                        if continuar == False:
+                            derrota()
+                        else:
+                            escolher_heroi2() #fim do loop
+                    else:
+                        if continuar == False:
+                            vitoria()
+                        else:
+                            escolher_heroi2 #fim do loop
+
+
+                else:
+                    if ganhador == 0:
+                        batalha_fase2_h2() #heroi 2 + fase 2 + vilao 2
+                    else:
+                        if ganhador == 2:
+                            if continuar == False:
+                                derrota()
+                            else:
+                                escolher_heroi2() #fim do loop
+                        else:
+                            if continuar == False:
+                                fim()
+                            else:
+                                escolher_heroi2 #fim do loop
 
 
 
 
-     
 
-    
+
