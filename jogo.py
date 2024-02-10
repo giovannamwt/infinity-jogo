@@ -19,6 +19,32 @@ class BarraSaude():
         pygame.draw.rect(tela, "red", (self.x, self.y, self.hp_maximo, self.altura))
         pygame.draw.rect(tela, "green", (self.x, self.y, self.hp_atual, self.altura))
 
+class AnimacaoAtaque():
+    def __init__(self, arquivo, inverter, x, y):
+        self.x = x
+        self.y = y
+        self.arquivo = arquivo
+        self.inverter = inverter
+
+    def draw(self, tela):
+        for i in range(1,7):
+            path = f"animations/{self.arquivo}/{i}.png"
+            print(f"Desenhando imagem {path}")
+            imagem = pygame.image.load(path)
+
+            if self.inverter:
+                imagem = pygame.transform.flip(imagem, True, False)
+
+            print(path)
+            rect = imagem.get_rect()
+            rect.center = (self.x, self.y)
+            tela.blit((imagem), rect)
+            pygame.display.update()
+            pygame.time.wait(50)
+            
+ataque_jogador = AnimacaoAtaque("water", False, 380, 250)
+ataque_inimigo = AnimacaoAtaque("fire", True, 200, 200)
+
 class Heroi1():
      def __init__(self):        
         self.nome = 'Guerreiro'
@@ -83,6 +109,7 @@ class Jogo():
          self.bg6 = pygame.image.load('images/fundo6.png')
          self.bg7 = pygame.image.load('images/fundo7.png')
          self.bg8 = pygame.image.load('images/fundo8.png')
+         self.bg9 = pygame.image.load('images/fundo8.png')
 
   
 #Minhas variáveis
@@ -99,12 +126,15 @@ titulo1='Escolha seu herói:'
 titulo2='Escolha a fase:'
 titulo3='Você Venceu!'
 titulo4='Você Perdeu!'
-txt_botao1 = fonte_texto_pequeno.render('escolhe' , True , 1) 
+txt_botao1 = fonte_texto_pequeno.render('escolher' , True , 1) 
 txt_botao2 = fonte_texto_pequeno.render('atacar' , True , 1) 
 txt_botao3 = fonte_texto_pequeno.render('continuar' , True , 1) 
 heroi_escolhido = False
 fase_escolhida = False
 ganhador = 0
+continuar = False
+num_heroi = 0
+num_fase = 0
 
 
 jogo = Jogo()
@@ -150,7 +180,8 @@ def escolher_heroi1():
 
 def escolher_heroi2():
 
-    global heroi_escolhido
+    #global heroi_escolhido
+    global num_heroi
 
     tela.blit(jogo.bg6, (0, 0))
     mouse = pygame.mouse.get_pos() 
@@ -162,27 +193,36 @@ def escolher_heroi2():
 #coordenadas do botão    
         if evento.type == pygame.MOUSEBUTTONDOWN: 
             if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
-                heroi_escolhido = True
+               # heroi_escolhido = True
+                num_heroi = 1
+        elif evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/3+80 <= mouse[0] <= largura/3+220 and altura/2+200 <= mouse[1] <= altura/2+240: 
+               # heroi_escolhido = True
+                num_heroi = 2
 
                    
-#define a cor do botão ao interagir    
+#botão 1   
     if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
-        pygame.draw.rect(tela,cor_clara,[largura/8+10, altura/2+200,140,40]) #desenho do botão
-          
+        pygame.draw.rect(tela,cor_clara,[largura/8+10, altura/2+200,140,40]) #desenho do botão        
     else: 
         pygame.draw.rect(tela,cor_escura,[largura/8+10,altura/2+200,140,40]) #desenho do botão
+
+#botão 2
+    if largura/3+80 <= mouse[0] <= largura/3+220 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/3+80, altura/2+200,140,40]) #desenho do botão        
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/3+80,altura/2+200,140,40]) #desenho do botão
       
 #posição do texto do texto
-    tela.blit(txt_botao1 , (largura/8+30, altura/2+207)) 
-    
+    tela.blit(txt_botao1 , (largura/8+30, altura/2+207))
+    tela.blit(txt_botao1 , (largura/3+95, altura/2+207))
     fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
     txttela = fontesys.render(titulo1, 1, (0,0,0))  ##### renderiza o texto na cor desejada
     tela.blit(txttela,(230,30)) #coordenadas do titulo
     
 
     pygame.display.update()  
-
-             
+    
 def escolher_fase1():
 
     global fase_escolhida
@@ -202,11 +242,38 @@ def escolher_fase1():
     txttela = fontesys.render(titulo2, 1, (0,0,0))  ##### renderiza o texto na cor desejada
     tela.blit(txttela,(230,60))
 
+    pygame.display.update()  
+
+def escolher_fase2():
+
+    global fase_escolhida
+    global num_fase
+
+    tela.blit(jogo.bg7, (0, 0))
+    mouse = pygame.mouse.get_pos() 
+    
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit() 
+
+#coordenadas do botão 1   
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2 <= mouse[1] <= altura/2+240: 
+                fase_escolhida = True
+                num_fase = 1
+#coordenadas do botão 1=2  
+        elif evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/3+80 <= mouse[0] <= largura/3+300 and altura/2 <= mouse[1] <= altura/2+240: 
+                fase_escolhida = True
+                num_fase = 2        
+
+    fontesys=pygame.font.SysFont(fonte, 60) ##### usa a fonte padrão
+    txttela = fontesys.render(titulo2, 1, (0,0,0))  ##### renderiza o texto na cor desejada
+    tela.blit(txttela,(230,60))
+
 
 
     pygame.display.update()  
     
-
 def batalha_fase1():
 
     global ganhador
@@ -232,6 +299,9 @@ def batalha_fase1():
 
                     danoH = random.choice(vilao1.dano)
                     vilao1.hp_atual = vilao1.hp_atual - danoH
+
+                    ataque_jogador.draw(tela)
+                    ataque_inimigo.draw(tela)
 
                     print(ganhador)
                 else:
@@ -334,11 +404,27 @@ while True :
                     if continuar == False:
                         derrota()
                     else:
-                        escolher_heroi1()
+                        escolher_heroi2()#voltar pra 1
                     
                 else:
                     if continuar == False:
                         vitoria()
+                    else:
+                        if num_heroi ==0:
+                            escolher_heroi2()
+                        else:
+                            if num_heroi == 1:
+                                if num_fase == 0:
+                                    escolher_fase2()
+                                else:
+                                    pass
+
+                            else:
+                                if num_fase == 0:
+                                    escolher_fase2()
+                                else:
+                                    pass
+
 
      
 
