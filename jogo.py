@@ -109,7 +109,7 @@ class Jogo():
          self.bg6 = pygame.image.load('images/fundo6.png')
          self.bg7 = pygame.image.load('images/fundo7.png')
          self.bg8 = pygame.image.load('images/fundo8.png')
-         self.bg9 = pygame.image.load('images/fundo8.png')
+         self.bg9 = pygame.image.load('images/fundo9.png')
 
   
 #Minhas variáveis
@@ -140,6 +140,8 @@ num_fase = 0
 jogo = Jogo()
 guerreiro = Heroi1()
 vilao1 = Vilao1()
+vilao2 = Vilao2()
+arqueiro = Heroi2()
 
 pygame.display.set_caption('JOGO DA GIOVANNA') #mensagem janela
 
@@ -326,6 +328,162 @@ def batalha_fase1():
 
     pygame.display.update()  
 
+def batalha_fase1_h2():
+
+    global ganhador
+
+    tela.blit(jogo.bg3, (0, 0))
+    mouse = pygame.mouse.get_pos() 
+   
+
+    barra_saude_vilao = BarraSaude(largura/2+120, altura/5, 10, arqueiro.hp_maximo, arqueiro.hp_atual)
+    barra_saude_vilao.draw(tela)
+    barra_saude_heroi = BarraSaude(largura/4, altura/5, 10, vilao1.hp_maximo, vilao1.hp_atual)
+    barra_saude_heroi.draw(tela)
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit()
+
+#coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                if arqueiro.hp_atual > 0 and vilao1.hp_atual > 0:
+                    dano = random.choice(arqueiro.dano)
+                    arqueiro.hp_atual = arqueiro.hp_atual - dano
+
+                    danoH = random.choice(vilao1.dano)
+                    vilao1.hp_atual = vilao1.hp_atual - danoH
+
+                    ataque_jogador.draw(tela)
+                    ataque_inimigo.draw(tela)
+
+                    print(ganhador)
+                else:
+                    if arqueiro.hp_atual <= 0:
+                        ganhador = 2
+                        print(ganhador)
+                    else:
+                        ganhador = 1
+                        print(ganhador)
+
+                #print(f"Tomou {dano} de dano")
+
+#define a cor do botão ao interagir    
+    if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/8+60, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/8+60,altura/2+200,140,40]) #desenho do botão
+
+    tela.blit(txt_botao2 , (largura/4, altura/2+207)) 
+
+
+    pygame.display.update()  
+
+def batalha_fase2_h1():
+
+    global ganhador
+
+    tela.blit(jogo.bg8, (0, 0))
+    mouse = pygame.mouse.get_pos() 
+   
+
+    barra_saude_vilao = BarraSaude(largura/2+120, altura/5, 10, guerreiro.hp_maximo, guerreiro.hp_atual)
+    barra_saude_vilao.draw(tela)
+    barra_saude_heroi = BarraSaude(largura/4, altura/5, 10, vilao2.hp_maximo, vilao2.hp_atual)
+    barra_saude_heroi.draw(tela)
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit()
+
+#coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                if guerreiro.hp_atual > 0 and vilao2.hp_atual > 0:
+                    dano = random.choice(guerreiro.dano)
+                    guerreiro.hp_atual = guerreiro.hp_atual - dano
+
+                    danoH = random.choice(vilao2.dano)
+                    vilao2.hp_atual = vilao2.hp_atual - danoH
+
+                    ataque_jogador.draw(tela)
+                    ataque_inimigo.draw(tela)
+
+                    print(ganhador)
+                else:
+                    if guerreiro.hp_atual <= 0:
+                        ganhador = 2
+                        print(ganhador)
+                    else:
+                        ganhador = 1
+                        print(ganhador)
+
+                #print(f"Tomou {dano} de dano")
+
+#define a cor do botão ao interagir    
+    if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/8+60, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/8+60,altura/2+200,140,40]) #desenho do botão
+
+    tela.blit(txt_botao2 , (largura/4, altura/2+207)) 
+
+
+    pygame.display.update() 
+
+def batalha_fase2_h2():
+
+    global ganhador
+
+    tela.blit(jogo.bg9, (0, 0))
+    mouse = pygame.mouse.get_pos() 
+   
+
+    barra_saude_vilao = BarraSaude(largura/2+120, altura/5, 10, arqueiro.hp_maximo, arqueiro.hp_atual)
+    barra_saude_vilao.draw(tela)
+    barra_saude_heroi = BarraSaude(largura/4, altura/5, 10, vilao2.hp_maximo, vilao2.hp_atual)
+    barra_saude_heroi.draw(tela)
+
+    for evento in pygame.event.get(): #apertar no x
+        if evento.type == pygame.QUIT: pygame.quit()
+
+#coordenadas do botão    
+        if evento.type == pygame.MOUSEBUTTONDOWN: 
+            if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+                if arqueiro.hp_atual > 0 and vilao2.hp_atual > 0:
+                    dano = random.choice(arqueiro.dano)
+                    arqueiro.hp_atual = arqueiro.hp_atual - dano
+
+                    danoH = random.choice(vilao2.dano)
+                    vilao2.hp_atual = vilao2.hp_atual - danoH
+
+                    ataque_jogador.draw(tela)
+                    ataque_inimigo.draw(tela)
+
+                    print(ganhador)
+                else:
+                    if arqueiro.hp_atual <= 0:
+                        ganhador = 2
+                        print(ganhador)
+                    else:
+                        ganhador = 1
+                        print(ganhador)
+
+                print(f"Tomou {dano} de dano")
+
+#define a cor do botão ao interagir    
+    if largura/8+10 <= mouse[0] <= largura/8+150 and altura/2+200 <= mouse[1] <= altura/2+240: 
+        pygame.draw.rect(tela,cor_clara,[largura/8+60, altura/2+200,140,40]) #desenho do botão
+          
+    else: 
+        pygame.draw.rect(tela,cor_escura,[largura/8+60,altura/2+200,140,40]) #desenho do botão
+
+    tela.blit(txt_botao2 , (largura/4, altura/2+207)) 
+
+
+    pygame.display.update() 
+
 def vitoria():
 
     global continuar
@@ -398,7 +556,7 @@ while True :
             escolher_fase1()
         else:
             if ganhador == 0:
-                batalha_fase1()
+                batalha_fase2_h2()
             else:
                 if ganhador == 1:
                     if continuar == False:
@@ -417,13 +575,19 @@ while True :
                                 if num_fase == 0:
                                     escolher_fase2()
                                 else:
-                                    pass
+                                    if num_fase == 1:
+                                        batalha_fase1()
+                                    else:
+                                        batalha_fase2_h1()
 
                             else:
                                 if num_fase == 0:
                                     escolher_fase2()
                                 else:
-                                    pass
+                                    if num_fase == 1:
+                                        batalha_fase1_h2()
+                                    else:
+                                        batalha_fase2_h2()
 
 
      
